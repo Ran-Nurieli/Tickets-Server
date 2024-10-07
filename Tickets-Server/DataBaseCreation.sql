@@ -53,3 +53,21 @@ Seats Int,
 TeamId INT,
 FOREIGN KEY(TeamId) REFERENCES Teams(TeamId),
 );
+
+-- Create a login for the admin user
+CREATE LOGIN [TaskAdminLogin] WITH PASSWORD = 'kukuPassword';
+Go
+
+-- Create a user in the TamiDB database for the login
+CREATE USER [TaskAdminUser] FOR LOGIN [TaskAdminLogin];
+Go
+
+-- Add the user to the db_owner role to grant admin privileges
+ALTER ROLE db_owner ADD MEMBER [TaskAdminUser];
+Go
+
+--select * from FeedBacks
+
+/*
+scaffold-DbContext "Server = (localdb)\MSSQLLocalDB;Initial Catalog=Tickets_Server;User ID=TaskAdminLogin;Password=kukuPassword;" Microsoft.EntityFrameworkCore.SqlServer -OutPutDir Models -Context TicketsServerDBContext -DataAnnotations -force
+*/
