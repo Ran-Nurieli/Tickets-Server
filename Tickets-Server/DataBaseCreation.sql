@@ -66,6 +66,10 @@ Go
 ALTER ROLE db_owner ADD MEMBER [TaskAdminUser];
 Go
 
+INSERT INTO Users Values(N'Amir',N'1234',17,N'Male',2,0)
+INSERT INTO Tickets Values(1,70,N'Gate 1',1,2,1)
+
+
 --select * from FeedBacks
 
 /*
