@@ -7,6 +7,7 @@
         public int FeedBackType { get; set; }
 
         public string Info { get; set; }
+
         public FeedBackDTO() { }
     }
 }
