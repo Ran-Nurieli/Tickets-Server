@@ -15,5 +15,18 @@
             this.Age = Age;
             this.Gender = Gender;
         }
+
+
+        public Models.User GetModels()
+        {
+            Models.User modelsUser = new Models.User()
+            {
+                Username = this.Username,
+                Password = this.Password,
+                Age = this.Age,
+                Gender = this.Gender
+            };
+            return modelsUser;
+        }
     }
 }

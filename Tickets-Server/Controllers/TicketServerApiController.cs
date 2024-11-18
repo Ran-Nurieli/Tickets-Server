@@ -10,17 +10,39 @@ namespace Tickets_Server.Controllers
     [ApiController]
     public class TicketServerApiController: ControllerBase
     {
-        //a variable to hold a reference to the db context!
-        private TicketsServerDBContext context;
-        //a variable that hold a reference to web hosting interface (that provide information like the folder on which the server runs etc...)
-        private IWebHostEnvironment webHostEnvironment;
-        //Use dependency injection to get the db context and web host into the constructor
-        public TicketServerApiController(TicketsServerDBContext context, IWebHostEnvironment env)
+        
+        private TicketsServerDBContext context;   //a variable to hold a reference to the db context!
+        private IWebHostEnvironment webHostEnvironment;          //a variable that hold a reference to web hosting interface (that provide information like the folder on which the server runs etc...)
+
+        public TicketServerApiController(TicketsServerDBContext context, IWebHostEnvironment env) //Use dependency injection to get the db context and web host into the constructor
         {
             this.context = context;
             this.webHostEnvironment = env;
         }
 
 
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] DTO.UserDTO userDto)
+        {
+            try
+            {
+                HttpContext.Session.Clear(); //Logout any previous login attempt    
+                Models.User modelsUser = userDto.GetModels();  //Create model user class
+                context.Users.Add(modelsUser);
+                context.SaveChanges();                
+                DTO.UserDTO dtoUser = new DTO.UserDTO(modelsUser);  //User was added!
+                return Ok(dtoUser);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
     }
+
+
+
 }

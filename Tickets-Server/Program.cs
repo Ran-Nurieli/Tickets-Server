@@ -8,6 +8,8 @@ namespace Tickets_Server
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddControllers();
+
 
             // Add services to the container.
 
@@ -55,7 +57,7 @@ namespace Tickets_Server
             #endregion
 
 
-            builder.Services.AddControllers();
+            
 
 
             // Configure the HTTP request pipeline.
