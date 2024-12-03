@@ -21,6 +21,40 @@ namespace Tickets_Server.Controllers
         }
 
 
+
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] DTO.LoginInfoDTO loginDto)
+        {
+            try
+            {
+                HttpContext.Session.Clear(); //Logout any previous login attempt
+
+                //Get model user class from DB with matching email. 
+                Models.User? modelsUser = context.GetUser(loginDto.Email);
+
+                //Check if user exist for this email and if password match, if not return Access Denied (Error 403) 
+                if (modelsUser == null || modelsUser.Password != loginDto.Password)
+                {
+                    return Unauthorized();
+                }
+
+                //Login suceed! now mark login in session memory!
+                HttpContext.Session.SetString("loggedInUser", modelsUser.Email);
+
+                DTO.AppUser dtoUser = new DTO.AppUser(modelsUser);
+                dtoUser.ProfileImagePath = GetProfileImageVirtualPath(dtoUser.Id);
+                return Ok(dtoUser);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
         [HttpPost("register")]
         public IActionResult Register([FromBody] DTO.UserDTO userDto)
         {
