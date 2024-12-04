@@ -14,7 +14,7 @@ public partial class FeedBack
     public int? FeedBackType { get; set; }
 
     [StringLength(1000)]
-    public string? Info { get; set; }
+    public string Info { get; set; } = null!;
 
     [InverseProperty("FeedBack")]
     public virtual ICollection<User> Users { get; set; } = new List<User>();

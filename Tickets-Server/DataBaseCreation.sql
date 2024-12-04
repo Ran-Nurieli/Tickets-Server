@@ -25,13 +25,13 @@ Info Nvarchar(1000) NOT NULL
 
 CREATE TABLE Users(
 Username Nvarchar(100) NOT NULL, ---שם משתמש
-[Password] Nvarchar(100) PRIMARY KEY NOT NULL,   --- סיסמה- מפתח ראשי
-Email Nvarchar(100) NOT NULL,
+[Password] Nvarchar(100) NOT NULL,   --- סיסמה- מפתח ראשי
+Email Nvarchar(100) PRIMARY KEY NOT NULL,
 Age int,---גיל
 Gender Nvarchar(100) NOT NULL,
 RankId INT,
 FeedBackId INT,
-IsAdmin BOOL,
+IsAdmin bit NOT NULL Default 0,
 FOREIGN KEY(RankId) REFERENCES Ranks(RankId),
 FOREIGN KEY(FeedBackId) REFERENCES FeedBacks(FeedBackId),
 
@@ -69,20 +69,21 @@ ALTER ROLE db_owner ADD MEMBER [AdminUser];
 Go
 
 
+INSERT INTO Ranks Values('Rookie')
+INSERT INTO Ranks Values('Advanced')
 INSERT INTO Ranks Values('Admin')
 
-INSERT INTO FeedBacks Values(1,'i was banned for no reason')
+INSERT INTO Teams Values(10000,'Hapoel','Tel Aviv',50)
 
-INSERT INTO Users Values('RanTheAdmin','Ran1234',18,'Male',0,0) --FAILED
+INSERT INTO Tickets Values(70,'Gate 1',1,2,1)
+
+INSERT INTO Users Values('Amir','12345','Amir1@gmail.com',17,'Male',2,null,0)
 
 
-
---INSERT INTO Users Values(N'Amir',N'1234',17,N'Male',2,0)
---INSERT INTO Tickets Values(1,70,N'Gate 1',1,2,1)
 
 
 --select * from FeedBacks
 
 /*
-scaffold-DbContext "Server = (localdb)\MSSQLLocalDB;Initial Catalog=Tickets_Server;User ID=TaskAdminLogin;Password=kukuPassword;" Microsoft.EntityFrameworkCore.SqlServer -OutPutDir Models -Context TicketsServerDBContext -DataAnnotations -force
+scaffold-DbContext "Server = (localdb)\MSSQLLocalDB;Initial Catalog=Tickets_Server;User ID=AdminLogin;Password=Ran1234;" Microsoft.EntityFrameworkCore.SqlServer -OutPutDir Models -Context TicketsServerDBContext -DataAnnotations -force
 */

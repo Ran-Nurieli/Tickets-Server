@@ -27,41 +27,39 @@ public partial class TicketsServerDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB;Initial Catalog=Tickets_Server;User ID=TaskAdminLogin;Password=kukuPassword;");
+        => optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB;Initial Catalog=Tickets_Server;User ID=AdminLogin;Password=Ran1234;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<FeedBack>(entity =>
         {
-            entity.HasKey(e => e.FeedBackId).HasName("PK__FeedBack__E2CB3B87A11B3CFB");
+            entity.HasKey(e => e.FeedBackId).HasName("PK__FeedBack__E2CB3B8749EE1152");
         });
 
         modelBuilder.Entity<Rank>(entity =>
         {
-            entity.HasKey(e => e.RankId).HasName("PK__Ranks__B37AF87608D8F079");
-
-            entity.Property(e => e.RankId).ValueGeneratedNever();
+            entity.HasKey(e => e.RankId).HasName("PK__Ranks__B37AF876B9B0940B");
         });
 
         modelBuilder.Entity<Team>(entity =>
         {
-            entity.HasKey(e => e.TeamId).HasName("PK__Teams__123AE799876BAC6B");
+            entity.HasKey(e => e.TeamId).HasName("PK__Teams__123AE799906D86E0");
         });
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.TicketId).HasName("PK__Tickets__712CC6079C3058D3");
+            entity.HasKey(e => e.TicketId).HasName("PK__Tickets__712CC607290A418D");
 
-            entity.HasOne(d => d.Team).WithMany(p => p.Tickets).HasConstraintName("FK__Tickets__TeamId__2E1BDC42");
+            entity.HasOne(d => d.Team).WithMany(p => p.Tickets).HasConstraintName("FK__Tickets__TeamId__2F10007B");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Password).HasName("PK__Users__87909B14895FDD73");
+            entity.HasKey(e => e.Email).HasName("PK__Users__A9D105358FB90A92");
 
-            entity.HasOne(d => d.FeedBack).WithMany(p => p.Users).HasConstraintName("FK__Users__FeedBackI__29572725");
+            entity.HasOne(d => d.FeedBack).WithMany(p => p.Users).HasConstraintName("FK__Users__FeedBackI__2A4B4B5E");
 
-            entity.HasOne(d => d.Rank).WithMany(p => p.Users).HasConstraintName("FK__Users__RankId__286302EC");
+            entity.HasOne(d => d.Rank).WithMany(p => p.Users).HasConstraintName("FK__Users__RankId__29572725");
         });
 
         OnModelCreatingPartial(modelBuilder);

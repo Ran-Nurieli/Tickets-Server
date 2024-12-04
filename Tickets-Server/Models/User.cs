@@ -9,20 +9,25 @@ namespace Tickets_Server.Models;
 public partial class User
 {
     [StringLength(100)]
-    public string? Username { get; set; }
+    public string Username { get; set; } = null!;
+
+    [StringLength(100)]
+    public string Password { get; set; } = null!;
 
     [Key]
     [StringLength(100)]
-    public string Password { get; set; } = null!;
+    public string Email { get; set; } = null!;
 
     public int? Age { get; set; }
 
     [StringLength(100)]
-    public string? Gender { get; set; }
+    public string Gender { get; set; } = null!;
 
     public int? RankId { get; set; }
 
     public int? FeedBackId { get; set; }
+
+    public bool IsAdmin { get; set; }
 
     [ForeignKey("FeedBackId")]
     [InverseProperty("Users")]

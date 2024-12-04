@@ -14,10 +14,10 @@ public partial class Team
     public int? Capacity { get; set; }
 
     [StringLength(100)]
-    public string? TeamName { get; set; }
+    public string TeamName { get; set; } = null!;
 
     [StringLength(100)]
-    public string? TeamCity { get; set; }
+    public string TeamCity { get; set; } = null!;
 
     public int? PriceForTicket { get; set; }
 
