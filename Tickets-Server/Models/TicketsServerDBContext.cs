@@ -33,29 +33,29 @@ public partial class TicketsServerDBContext : DbContext
     {
         modelBuilder.Entity<FeedBack>(entity =>
         {
-            entity.HasKey(e => e.FeedBackId).HasName("PK__FeedBack__E2CB3B8749EE1152");
+            entity.HasKey(e => e.FeedBackId).HasName("PK__FeedBack__E2CB3B8794886595");
         });
 
         modelBuilder.Entity<Rank>(entity =>
         {
-            entity.HasKey(e => e.RankId).HasName("PK__Ranks__B37AF876B9B0940B");
+            entity.HasKey(e => e.RankId).HasName("PK__Ranks__B37AF8768CA4ED71");
         });
 
         modelBuilder.Entity<Team>(entity =>
         {
-            entity.HasKey(e => e.TeamId).HasName("PK__Teams__123AE799906D86E0");
+            entity.HasKey(e => e.TeamId).HasName("PK__Teams__123AE79973C5D31B");
         });
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.TicketId).HasName("PK__Tickets__712CC607290A418D");
+            entity.HasKey(e => e.TicketId).HasName("PK__Tickets__712CC607E771E626");
 
             entity.HasOne(d => d.Team).WithMany(p => p.Tickets).HasConstraintName("FK__Tickets__TeamId__2F10007B");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Email).HasName("PK__Users__A9D105358FB90A92");
+            entity.HasKey(e => e.Email).HasName("PK__Users__A9D1053528A019D2");
 
             entity.HasOne(d => d.FeedBack).WithMany(p => p.Users).HasConstraintName("FK__Users__FeedBackI__2A4B4B5E");
 
