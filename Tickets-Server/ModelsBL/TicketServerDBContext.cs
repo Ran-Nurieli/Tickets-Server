@@ -3,11 +3,11 @@ using Tickets_Server.Models;
 
 namespace Tickets_Server.Models
 {
-    public partial class TicketServerDBContext:DbContext
+    public partial class TicketsServerDBContext:DbContext
     {
         public User? GetUser(string email)
         {
-           return this.Users.where(x => x.Email == email).FirstOrDefault();
+           return this.Users.Where(x => x.Email == email).FirstOrDefault();
         }
 
 
