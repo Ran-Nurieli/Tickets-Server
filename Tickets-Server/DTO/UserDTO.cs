@@ -2,20 +2,23 @@
 {
     public class UserDTO
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string Username { get; set; } = null!;
+        public string Password { get; set; } = null!;
 
-        public string Email { get; set; }
-        public int Age { get; set; }
-        public string Gender { get; set; }
+        public string Email { get; set; } = null!;
+        public int? Age { get; set; } = null!;
+        public string Gender { get; set; } = null!;
 
       
+        public UserDTO() { }
+
         public UserDTO(Models.User user)
         {
-            this.Username = Username;
-            this.Password = Password;
-            this.Age = Age;
-            this.Gender = Gender;
+            this.Username = user.Username;
+            this.Password = user.Password;
+            this.Email = user.Email;
+            this.Age = ((int)user.Age);
+            this.Gender = user.Gender;
         }
 
 
@@ -25,6 +28,7 @@
             {
                 Username = this.Username,
                 Password = this.Password,
+                Email = this.Email,
                 Age = this.Age,
                 Gender = this.Gender
             };
