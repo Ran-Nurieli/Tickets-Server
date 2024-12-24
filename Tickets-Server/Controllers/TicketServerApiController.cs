@@ -40,6 +40,7 @@ namespace Tickets_Server.Controllers
                 }
 
                 //Login suceed! now mark login in session memory!
+
                 HttpContext.Session.SetString("loggedInUser", modelsUser.Username);
 
                 DTO.UserDTO dtoUser = new DTO.UserDTO(modelsUser);
