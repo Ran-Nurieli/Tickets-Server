@@ -82,7 +82,7 @@ INSERT INTO Users Values('Amir','12345','Amir1@gmail.com',17,'Male',2,null,0)
 
 
 
---select * from FeedBacks
+--select * from Users
 
 /*
 scaffold-DbContext "Server = (localdb)\MSSQLLocalDB;Initial Catalog=Tickets_Server;User ID=AdminLogin;Password=Ran1234;" Microsoft.EntityFrameworkCore.SqlServer -OutPutDir Models -Context TicketsServerDBContext -DataAnnotations -force
