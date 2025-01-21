@@ -9,6 +9,8 @@
         public int? Age { get; set; } = null!;
         public string Gender { get; set; } = null!;
 
+        public bool IsAdmin {  get; set; }
+
       
         public UserDTO() { }
 
@@ -19,6 +21,7 @@
             this.Email = user.Email;
             this.Age = ((int)user.Age);
             this.Gender = user.Gender;
+            this.IsAdmin = user.IsAdmin;
         }
 
 
@@ -30,7 +33,8 @@
                 Password = this.Password,
                 Email = this.Email,
                 Age = this.Age,
-                Gender = this.Gender
+                Gender = this.Gender,
+                IsAdmin = this.IsAdmin
             };
             return modelsUser;
         }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tickets_Server.DTO;
 using Tickets_Server.Models;
 using Azure.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tickets_Server.Controllers
 {
@@ -73,6 +74,43 @@ namespace Tickets_Server.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        [HttpPost("UpdateProfile")]
+        public IActionResult UpdateProfile(DTO.UserDTO userDto)
+        {
+            try
+            {
+                string? userEmail = HttpContext.Session.GetString("loggedInUser");
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    return Unauthorized("User is not logged in");
+                }
+
+
+                Models.User? user = context.GetUser(userEmail);
+                context.ChangeTracker.Clear();
+                if (user == null || (user.IsAdmin == false && userDto.Email != user.Email))
+                {
+                    return Unauthorized("Non Manager User is trying to update a different user");
+                }
+
+                Models.User appUser = userDto.GetModels();
+
+                context.Entry(appUser).State = EntityState.Modified;
+
+                context.SaveChanges();
+
+                //Task was updated!
+                return Ok();
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
