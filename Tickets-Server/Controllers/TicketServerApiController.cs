@@ -101,7 +101,7 @@ namespace Tickets_Server.Controllers
 
                 context.SaveChanges();
 
-                //Task was updated!
+                
                 return Ok();
 
 
@@ -114,7 +114,44 @@ namespace Tickets_Server.Controllers
         }
 
 
-    }
+        [HttpPost("SellTicket")]
+        public IActionResult SellTicket(DTO.TicketDTO ticketDto)
+        {
+
+            try
+            {
+
+                var ticket = context.Tickets
+           .FirstOrDefault(t => t.TicketId == ticketDto.TicketId); // Query ticket by TicketId
+
+                // If no ticket is found, return a NotFound response
+                if (ticket == null)
+                {
+                    return NotFound("Ticket not found");
+                }
+
+                if (ticket.Price > ticketDto.Price)
+                {
+                    return Unauthorized("you cant sell a ticket for more than its original price");
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+
+
+        }
+
+
+
+
+
+        }
 
 
 
