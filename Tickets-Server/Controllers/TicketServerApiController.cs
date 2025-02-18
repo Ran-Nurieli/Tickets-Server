@@ -117,41 +117,43 @@ namespace Tickets_Server.Controllers
         [HttpPost("SellTicket")]
         public IActionResult SellTicket(DTO.TicketDTO ticketDto)
         {
-
             try
             {
-
+                // Retrieve the ticket from the database
                 var ticket = context.Tickets
-           .FirstOrDefault(t => t.TicketId == ticketDto.TicketId); // Query ticket by TicketId
+                    .FirstOrDefault(t => t.TicketId == ticketDto.TicketId);
 
                 // If no ticket is found, return a NotFound response
                 if (ticket == null)
                 {
-                    return NotFound("Ticket not found");
+                    return NotFound(new { message = "Ticket not found" });
                 }
 
-                if (ticket.Price > ticketDto.Price)
+                // Validate the price, ensuring it doesn't exceed the original price
+                if (ticketDto.Price > ticket.Price)
                 {
-                    return Unauthorized("you cant sell a ticket for more than its original price");
+                    return Unauthorized(new { message = "You can't sell a ticket for more than its original price." });
                 }
 
-                return Ok();
+                // Return a success response
+                return Ok(new { message = "Ticket sold successfully" });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                // Log the exception (or return it for debugging purposes)
+                return BadRequest(new { message = "An error occurred while selling the ticket.", error = ex.Message });
             }
-
-
-
-
         }
 
 
 
 
 
-        }
+
+
+
+
+    }
 
 
 
