@@ -42,7 +42,7 @@ namespace Tickets_Server.Controllers
 
                 //Login suceed! now mark login in session memory!
 
-                HttpContext.Session.SetString("loggedInUser", modelsUser.Username);
+                HttpContext.Session.SetString("loggedInUser", modelsUser.Email);
 
                 DTO.UserDTO dtoUser = new DTO.UserDTO(modelsUser);
 
@@ -76,7 +76,7 @@ namespace Tickets_Server.Controllers
 
         }
 
-        [HttpPost("UpdateProfile")]
+        [HttpPost("UpdateUser")]
         public IActionResult UpdateProfile(DTO.UserDTO userDto)
         {
             try
