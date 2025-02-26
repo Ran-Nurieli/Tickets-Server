@@ -145,7 +145,55 @@ namespace Tickets_Server.Controllers
             }
         }
 
+        [HttpGet("GetTickets")]
+        public async Task<IActionResult> GetTickets()
+        {
+            try
+            {
+                // Assuming tickets are stored in a Tickets table or similar in your DB
+                var tickets = await context.Tickets.ToListAsync();
 
+                if (tickets == null || !tickets.Any())
+                {
+                    return NotFound("No tickets found.");
+                }
+
+                return Ok(tickets);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+
+
+        [HttpDelete("RemoveTicket")]
+        public async Task<IActionResult> RemoveTicket([FromBody] Ticket ticket)
+        {
+            try
+            {
+                // Find the ticket in the database matching the row and seat from the request
+                var ticketToRemove = await context.Tickets
+                    .Where(x => x.Seats == ticket.Seats && x.Row == ticket.Row)
+                    .FirstOrDefaultAsync();
+
+                if (ticketToRemove == null)
+                {
+                    return NotFound("Ticket not found.");
+                }
+
+                // Remove the found ticket
+                context.Tickets.Remove(ticketToRemove);
+                await context.SaveChangesAsync();
+
+                return Ok("Ticket removed successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
 
 
 
