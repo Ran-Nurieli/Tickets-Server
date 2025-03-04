@@ -195,7 +195,25 @@ namespace Tickets_Server.Controllers
             }
         }
 
-
+        [HttpDelete("RemoveUser")]
+        public async Task<IActionResult> RemoveUser([FromBody] User user)
+        {
+            try
+            {
+                var userToRemove = await context.Users.Where(x => x.Email == user.Email).FirstOrDefaultAsync();
+                if(userToRemove == null)
+                {
+                    return NotFound("user not found");
+                }
+                context.Users.Remove(userToRemove);
+                await context.SaveChangesAsync();
+                return Ok("user removed succesfully");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest($"An error occured: {ex.Message}");
+            }
+        }
 
 
 
