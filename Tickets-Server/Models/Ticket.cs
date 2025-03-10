@@ -25,4 +25,15 @@ public partial class Ticket
     [ForeignKey("TeamId")]
     [InverseProperty("Tickets")]
     public virtual Team? Team { get; set; }
+
+    public Ticket(Models.Ticket ticket)
+    {
+        this.TicketId++;
+        this.Price = ticket.Price;
+        this.Place = ticket.Place;
+        this.Row = ticket.Row;
+        this.Seats = ticket.Seats;
+        this.TeamId = ticket.TeamId;
+        this.TeamId = 0;
+    }
 }

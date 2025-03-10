@@ -76,6 +76,8 @@ namespace Tickets_Server.Controllers
 
         }
 
+
+
         [HttpPost("UpdateUser")]
         public IActionResult UpdateProfile(DTO.UserDTO userDto)
         {

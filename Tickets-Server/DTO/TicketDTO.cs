@@ -18,6 +18,8 @@ namespace Tickets_Server.DTO
 
         public TicketDTO() { }
 
+ 
+
 
     }
 }
