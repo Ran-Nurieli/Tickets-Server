@@ -169,13 +169,25 @@ namespace Tickets_Server.Controllers
 
 
         [HttpDelete("RemoveTicket")]
-        public async Task<IActionResult> RemoveTicket([FromBody] Ticket ticket)
+        public async Task<IActionResult> RemoveTicket([FromBody] int ticketId)
         {
             try
             {
+                string curMail = HttpContext.Session.GetString("loggedInUser");
+                if(string.IsNullOrEmpty(curMail))
+                {
+                    return Unauthorized();
+                }
+                Models.User? modelsUser = context.GetUser(curMail);
+                if (modelsUser == null || !modelsUser.IsAdmin)
+                {
+                    return Unauthorized() ;
+                }
+
+
                 // Find the ticket in the database matching the row and seat from the request
                 var ticketToRemove = await context.Tickets
-                    .Where(x => x.Seats == ticket.Seats && x.Row == ticket.Row)
+                    .Where(x => x.TicketId == ticketId)
                     .FirstOrDefaultAsync();
 
                 if (ticketToRemove == null)
@@ -196,11 +208,22 @@ namespace Tickets_Server.Controllers
         }
 
         [HttpDelete("RemoveUser")]
-        public async Task<IActionResult> RemoveUser([FromBody] User user)
+        public async Task<IActionResult> RemoveUser([FromBody] string mail)
         {
             try
             {
-                var userToRemove = await context.Users.Where(x => x.Email == user.Email).FirstOrDefaultAsync();
+                string curMail = HttpContext.Session.GetString("loggedInUser");
+                if (string.IsNullOrEmpty(curMail))
+                {
+                    return Unauthorized();
+                }
+                Models.User? modelsUser = context.GetUser(curMail);
+                if (modelsUser == null || !modelsUser.IsAdmin)
+                {
+                    return Unauthorized();
+                }
+
+                var userToRemove = await context.Users.Where(x => x.Email == mail).FirstOrDefaultAsync();
                 if(userToRemove == null)
                 {
                     return NotFound("user not found");
@@ -217,7 +240,36 @@ namespace Tickets_Server.Controllers
 
 
 
+        [HttpGet("GetUsers")]
+        public async Task<IActionResult> GetUsers()
+        {
+            try
+            {
+                string curMail = HttpContext.Session.GetString("loggedInUser");
+                if (string.IsNullOrEmpty(curMail))
+                {
+                    return Unauthorized();
+                }
+                Models.User? modelsUser = context.GetUser(curMail);
+                if (modelsUser == null || !modelsUser.IsAdmin)
+                {
+                    return Unauthorized();
+                }
+                var Users = await context.Users.ToListAsync();
+                if(Users == null)
+                {
+                    return NotFound();
+                }
+                return Ok(Users);
 
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
 
     }
 
