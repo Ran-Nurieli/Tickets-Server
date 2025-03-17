@@ -26,14 +26,14 @@ public partial class Ticket
     [InverseProperty("Tickets")]
     public virtual Team? Team { get; set; }
 
-    public Ticket(Models.Ticket ticket)
+    public Ticket(DTO.TicketDTO ticketDTO)
     {
-        this.TicketId++;
-        this.Price = ticket.Price;
-        this.Place = ticket.Place;
-        this.Row = ticket.Row;
-        this.Seats = ticket.Seats;
-        this.TeamId = ticket.TeamId;
-        this.TeamId = 0;
+        this.Price = ticketDTO.Price;
+        this.Place = ticketDTO.Place;
+        this.Row = ticketDTO.Row;
+        this.Seats = ticketDTO.Seats;
+        this.TeamId = ticketDTO.TeamId;
     }
+
+
 }

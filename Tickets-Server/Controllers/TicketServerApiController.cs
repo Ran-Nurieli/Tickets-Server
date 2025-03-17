@@ -9,9 +9,9 @@ namespace Tickets_Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TicketServerApiController: ControllerBase
+    public class TicketServerApiController : ControllerBase
     {
-        
+
         private TicketsServerDBContext context;   //a variable to hold a reference to the db context!
         private IWebHostEnvironment webHostEnvironment;          //a variable that hold a reference to web hosting interface (that provide information like the folder on which the server runs etc...)
 
@@ -65,7 +65,7 @@ namespace Tickets_Server.Controllers
                 HttpContext.Session.Clear(); //Logout any previous login attempt    
                 Models.User modelsUser = userDto.GetModels();  //Create model user class
                 context.Users.Add(modelsUser);
-                context.SaveChanges();                
+                context.SaveChanges();
                 DTO.UserDTO dtoUser = new DTO.UserDTO(modelsUser);  //User was added!
                 return Ok(dtoUser);
             }
@@ -76,7 +76,25 @@ namespace Tickets_Server.Controllers
 
         }
 
+        [HttpPost("AddTicket")]
+        public IActionResult AddTicket([FromBody] DTO.TicketDTO ticketDTO)
+        {
+            try
+            {
+                // Convert the DTO to a Ticket model using the constructor that accepts TicketDTO
+                Models.Ticket ticket = new Models.Ticket(ticketDTO);
 
+                // Add the ticket to the database
+                context.Tickets.Add(ticket);
+                context.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost("UpdateUser")]
         public IActionResult UpdateProfile(DTO.UserDTO userDto)
@@ -103,7 +121,7 @@ namespace Tickets_Server.Controllers
 
                 context.SaveChanges();
 
-                
+
                 return Ok();
 
 
@@ -176,14 +194,14 @@ namespace Tickets_Server.Controllers
             try
             {
                 string curMail = HttpContext.Session.GetString("loggedInUser");
-                if(string.IsNullOrEmpty(curMail))
+                if (string.IsNullOrEmpty(curMail))
                 {
                     return Unauthorized();
                 }
                 Models.User? modelsUser = context.GetUser(curMail);
                 if (modelsUser == null || !modelsUser.IsAdmin)
                 {
-                    return Unauthorized() ;
+                    return Unauthorized();
                 }
 
 
@@ -226,7 +244,7 @@ namespace Tickets_Server.Controllers
                 }
 
                 var userToRemove = await context.Users.Where(x => x.Email == mail).FirstOrDefaultAsync();
-                if(userToRemove == null)
+                if (userToRemove == null)
                 {
                     return NotFound("user not found");
                 }
@@ -234,7 +252,7 @@ namespace Tickets_Server.Controllers
                 await context.SaveChangesAsync();
                 return Ok("user removed succesfully");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest($"An error occured: {ex.Message}");
             }
@@ -258,23 +276,22 @@ namespace Tickets_Server.Controllers
                     return Unauthorized();
                 }
                 var Users = await context.Users.ToListAsync();
-                if(Users == null)
+                if (Users == null)
                 {
                     return NotFound();
                 }
                 return Ok(Users);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        
+
+
+
 
     }
-
-
-
 }
