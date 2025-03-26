@@ -14,6 +14,9 @@ public partial class User
     [StringLength(100)]
     public string Password { get; set; } = null!;
 
+    [StringLength(20)]
+    public string Phone { get; set; } = null!;
+
     [Key]
     [StringLength(100)]
     public string Email { get; set; } = null!;

@@ -5,6 +5,7 @@
         public string Username { get; set; } = null!;
         public string Password { get; set; } = null!;
 
+        public string Phone { get; set; } = null!;
         public string Email { get; set; } = null!;
         public int? Age { get; set; } = null!;
         public string Gender { get; set; } = null!;
@@ -18,6 +19,7 @@
         {
             this.Username = user.Username;
             this.Password = user.Password;
+            this.Phone = user.Phone;
             this.Email = user.Email;
             this.Age = ((int)user.Age);
             this.Gender = user.Gender;
@@ -31,6 +33,7 @@
             {
                 Username = this.Username,
                 Password = this.Password,
+                Phone = this.Phone,
                 Email = this.Email,
                 Age = this.Age,
                 Gender = this.Gender,

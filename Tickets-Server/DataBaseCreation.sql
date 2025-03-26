@@ -27,7 +27,7 @@ CREATE TABLE Users(
 Username Nvarchar(100) NOT NULL, ---שם משתמש
 [Password] Nvarchar(100) NOT NULL,   --- סיסמה- מפתח ראשי
 Email Nvarchar(100) PRIMARY KEY NOT NULL,
-Phone Nvarchar(20),NOT NULL,
+Phone Nvarchar(20) NOT NULL,
 Age int,---גיל
 Gender Nvarchar(100) NOT NULL,
 RankId INT,
