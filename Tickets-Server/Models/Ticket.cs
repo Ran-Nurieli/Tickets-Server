@@ -35,5 +35,9 @@ public partial class Ticket
         this.TeamId = ticketDTO.TeamId;
     }
 
+    public Ticket()
+    {
+
+    }
 
 }
