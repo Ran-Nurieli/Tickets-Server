@@ -55,7 +55,10 @@ Place Nvarchar(100) NOT NULL,
 Seats Int,
 TeamId INT,
 FOREIGN KEY(TeamId) REFERENCES Teams(TeamId),
+UserEmail nvarchar(100),
+FOREIGN KEY(UserEmail) REFERENCES Users(Email),
 );
+
 
 -- Create a login for the admin user
 CREATE LOGIN [AdminLogin] WITH PASSWORD = 'Ran1234';
@@ -78,10 +81,12 @@ INSERT INTO Teams Values(10000,'Hapoel','Tel Aviv',50)
 
 INSERT INTO Tickets Values(70,'Gate 1',1,2,1)
 
-INSERT INTO Users Values('Amir','12345','Amir1@gmail.com',17,'Male',2,null,0)
+INSERT INTO Users Values('Amir','12345','Amir1@gmail.com','0509991122',17,'Male',2,null,0)
 
 
-
+INSERT INTO Tickets Values(70,'Gate 1',1,2,1)
+INSERT INTO Tickets Values(70,'Gate 3',1,2,1)
+INSERT INTO Tickets Values(70,'Gate 2',1,2,1)
 
 --select * from Users
 

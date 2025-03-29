@@ -75,15 +75,31 @@ namespace Tickets_Server.Controllers
             }
 
         }
+        //[HttpGet("BuyTicket")]
+        //public IActionResult BuyTicket([FromQuery] int ticketId)
+        //{
+        //    try
+        //    {
+
+        //    }
+        //}
+
 
         [HttpPost("AddTicket")]
         public IActionResult AddTicket([FromBody] DTO.TicketDTO ticketDTO)
         {
             try
             {
+                string curMail = HttpContext.Session.GetString("loggedInUser");
+                if (string.IsNullOrEmpty(curMail))
+                {
+                    return Unauthorized();
+                }
+
+
                 // Convert the DTO to a Ticket model using the constructor that accepts TicketDTO
                 Models.Ticket ticket = new Models.Ticket(ticketDTO);
-
+                ticket.UserEmail = curMail;
                 // Add the ticket to the database
                 context.Tickets.Add(ticket);
                 context.SaveChanges();

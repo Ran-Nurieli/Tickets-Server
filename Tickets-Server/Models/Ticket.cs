@@ -26,6 +26,11 @@ public partial class Ticket
     [InverseProperty("Tickets")]
     public virtual Team? Team { get; set; }
 
+
+    public string? UserEmail { get; set; }
+    [ForeignKey("UserEmail")]
+    public virtual User? User { get; set; }
+
     public Ticket(DTO.TicketDTO ticketDTO)
     {
         this.Price = ticketDTO.Price;
