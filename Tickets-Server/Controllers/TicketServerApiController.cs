@@ -80,17 +80,13 @@ namespace Tickets_Server.Controllers
         {
             try
             {
-                var tickets = await context.Tickets.ToListAsync();
-                if (tickets == null || !tickets.Any())
+                var ticket = await context.Tickets.Where(x => x.TicketId == ticketId).FirstOrDefaultAsync();
+                if(ticket == null)
                 {
-                    return NotFound("No tickets found.");
+                    return NotFound("ticket not found");
                 }
-
-                var ticket = await context.Tickets.Include(t => t.User).FirstOrDefaultAsync(t => t.TicketId == ticketId);
-                if (ticket == null)
-                {
-                    return NotFound("Ticket not found.");
-                }
+               
+               
                 string? phoneNumber = ticket.User?.Phone;
 
                 context.Tickets.Remove(ticket);
