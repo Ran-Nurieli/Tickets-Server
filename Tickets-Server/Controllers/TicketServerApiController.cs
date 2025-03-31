@@ -75,14 +75,34 @@ namespace Tickets_Server.Controllers
             }
 
         }
-        //[HttpGet("BuyTicket")]
-        //public IActionResult BuyTicket([FromQuery] int ticketId)
-        //{
-        //    try
-        //    {
+        [HttpGet("BuyTicket")]
+        public async Task<IActionResult> BuyTicket([FromQuery] int ticketId)
+        {
+            try
+            {
+                var tickets = await context.Tickets.ToListAsync();
+                if (tickets == null || !tickets.Any())
+                {
+                    return NotFound("No tickets found.");
+                }
 
-        //    }
-        //}
+                var ticket = await context.Tickets.Include(t => t.User).FirstOrDefaultAsync(t => t.TicketId == ticketId);
+                if (ticket == null)
+                {
+                    return NotFound("Ticket not found.");
+                }
+                string? phoneNumber = ticket.User?.Phone;
+
+                context.Tickets.Remove(ticket);
+                await context.SaveChangesAsync();
+
+                return Ok(new { message = "send a message to-", phoneNumber });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
         [HttpPost("AddTicket")]
