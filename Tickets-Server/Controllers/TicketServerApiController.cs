@@ -62,6 +62,8 @@ namespace Tickets_Server.Controllers
         {
             try
             {
+
+
                 HttpContext.Session.Clear(); //Logout any previous login attempt    
                 Models.User modelsUser = userDto.GetModels();  //Create model user class
                 context.Users.Add(modelsUser);
@@ -80,14 +82,20 @@ namespace Tickets_Server.Controllers
         {
             try
             {
-                var ticket = await context.Tickets.Where(x => x.TicketId == ticketId).FirstOrDefaultAsync();
+                string curMail = HttpContext.Session.GetString("loggedInUser");
+                if (string.IsNullOrEmpty(curMail))
+                {
+                    return Unauthorized();
+                }
+
+                var ticket = await context.Tickets.Include(x => x.UserEmailNavigation).Where(x => x.TicketId == ticketId).FirstOrDefaultAsync();
                 if(ticket == null)
                 {
                     return NotFound("ticket not found");
                 }
                
                
-                string? phoneNumber = ticket.User?.Phone;
+                string? phoneNumber = ticket.UserEmailNavigation?.Phone;
 
                 context.Tickets.Remove(ticket);
                 await context.SaveChangesAsync();
@@ -171,6 +179,11 @@ namespace Tickets_Server.Controllers
         {
             try
             {
+                string curMail = HttpContext.Session.GetString("loggedInUser");
+                if (string.IsNullOrEmpty(curMail))
+                {
+                    return Unauthorized();
+                }
                 // Retrieve the ticket from the database
                 var ticket = context.Tickets
                     .FirstOrDefault(t => t.TicketId == ticketDto.TicketId);

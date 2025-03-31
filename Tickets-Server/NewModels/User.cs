@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Tickets_Server.Models;
+namespace Tickets_Server.NewModels;
 
 public partial class User
 {
@@ -14,12 +14,12 @@ public partial class User
     [StringLength(100)]
     public string Password { get; set; } = null!;
 
-    [StringLength(20)]
-    public string Phone { get; set; } = null!;
-
     [Key]
     [StringLength(100)]
     public string Email { get; set; } = null!;
+
+    [StringLength(20)]
+    public string Phone { get; set; } = null!;
 
     public int? Age { get; set; }
 

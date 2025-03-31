@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Tickets_Server.Models;
+namespace Tickets_Server.NewModels;
 
 public partial class TicketsServerDBContext : DbContext
 {
