@@ -14,12 +14,12 @@ public partial class User
     [StringLength(100)]
     public string Password { get; set; } = null!;
 
-    [StringLength(20)]
-    public string Phone { get; set; } = null!;
-
     [Key]
     [StringLength(100)]
     public string Email { get; set; } = null!;
+
+    [StringLength(20)]
+    public string Phone { get; set; } = null!;
 
     public int? Age { get; set; }
 
@@ -35,6 +35,9 @@ public partial class User
     [ForeignKey("FeedBackId")]
     [InverseProperty("Users")]
     public virtual FeedBack? FeedBack { get; set; }
+
+    [InverseProperty("BuyerEmailNavigation")]
+    public virtual ICollection<PurchaseRequest> PurchaseRequests { get; set; } = new List<PurchaseRequest>();
 
     [ForeignKey("RankId")]
     [InverseProperty("Users")]

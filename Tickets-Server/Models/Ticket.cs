@@ -22,29 +22,17 @@ public partial class Ticket
 
     public int? TeamId { get; set; }
 
+    [StringLength(100)]
+    public string? UserEmail { get; set; }
+
+    [InverseProperty("Ticket")]
+    public virtual PurchaseRequest? PurchaseRequest { get; set; }
+
     [ForeignKey("TeamId")]
     [InverseProperty("Tickets")]
     public virtual Team? Team { get; set; }
 
-
-    public string? UserEmail { get; set; }
-
-
     [ForeignKey("UserEmail")]
     [InverseProperty("Tickets")]
     public virtual User? UserEmailNavigation { get; set; }
-    public Ticket(DTO.TicketDTO ticketDTO)
-    {
-        this.Price = ticketDTO.Price;
-        this.Place = ticketDTO.Place;
-        this.Row = ticketDTO.Row;
-        this.Seats = ticketDTO.Seats;
-        this.TeamId = ticketDTO.TeamId;
-    }
-
-    public Ticket()
-    {
-
-    }
-
 }

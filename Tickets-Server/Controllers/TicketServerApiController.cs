@@ -4,6 +4,7 @@ using Tickets_Server.DTO;
 using Tickets_Server.Models;
 using Azure.Identity;
 using Microsoft.EntityFrameworkCore;
+using Tickets_Server.ModelsHelpers;
 
 namespace Tickets_Server.Controllers
 {
@@ -88,16 +89,25 @@ namespace Tickets_Server.Controllers
                     return Unauthorized();
                 }
 
-                var ticket = await context.Tickets.Include(x => x.UserEmailNavigation).Where(x => x.TicketId == ticketId).FirstOrDefaultAsync();
-                if(ticket == null)
+                var ticket = await context.Tickets.Include(x => x.UserEmailNavigation).Include(x => x.PurchaseRequest).Where(x => x.TicketId == ticketId).FirstOrDefaultAsync();
+                if (ticket == null)
                 {
                     return NotFound("ticket not found");
                 }
-               
-               
+                if (ticket.PurchaseRequest != null)
+                {
+                    return BadRequest("Ticket already purchased");
+                }
+
                 string? phoneNumber = ticket.UserEmailNavigation?.Phone;
 
-                context.Tickets.Remove(ticket);
+                PurchaseRequest purchaseRequest = new PurchaseRequest
+                {
+                    TicketId = ticket.TicketId,
+                    BuyerEmail = curMail,
+                    IsAccepted = false
+                };
+                context.PurchaseRequests.Add(purchaseRequest);
                 await context.SaveChangesAsync();
 
                 return Ok(new { message = "send a message to-", phoneNumber });
@@ -122,7 +132,7 @@ namespace Tickets_Server.Controllers
 
 
                 // Convert the DTO to a Ticket model using the constructor that accepts TicketDTO
-                Models.Ticket ticket = new Models.Ticket(ticketDTO);
+                Models.Ticket ticket = TicketModelHelper.TicketDTOToTicket(ticketDTO);
                 ticket.UserEmail = curMail;
                 // Add the ticket to the database
                 context.Tickets.Add(ticket);
@@ -216,7 +226,7 @@ namespace Tickets_Server.Controllers
             try
             {
                 // Assuming tickets are stored in a Tickets table or similar in your DB
-                var tickets = await context.Tickets.ToListAsync();
+                var tickets = await context.Tickets.Include(x => x.PurchaseRequest).Where(x => x.PurchaseRequest == null).ToListAsync();
 
                 if (tickets == null || !tickets.Any())
                 {
@@ -334,8 +344,84 @@ namespace Tickets_Server.Controllers
             }
         }
 
+        [HttpGet("GetMyTickets")]
+        public async Task<IActionResult> GetMyTickets()
+        {
+            try
+            {
+                string curMail = HttpContext.Session.GetString("loggedInUser");
+                if (string.IsNullOrEmpty(curMail))
+                {
+                    return Unauthorized();
+                }
+                var tickets = await context.Tickets
+                    .Include(x => x.PurchaseRequest)
+                    .ThenInclude(x => x.BuyerEmailNavigation)
+                    .Where(x => x.UserEmail == curMail && x.PurchaseRequest == null).ToListAsync();
 
-        
+                if (tickets == null)
+                {
+                    return NotFound();
+                }
+                List<MyTicketsDTO> myTickets = new List<MyTicketsDTO>();
+                foreach (var ticket in tickets)
+                {
+                    myTickets.Add(new MyTicketsDTO(ticket));
+                }
+                return Ok(tickets);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public class SetPurchaseParameters
+        {
+            public int TicketID { get; set; }
+            public bool IsAccepted { get; set; }
+        }   
+        [HttpPost("SetPurchaseStatus")]
+        public async Task<IActionResult> SetPurchaseStatus([FromBody] SetPurchaseParameters parameters)
+        {
+            try
+            {
+                string curMail = HttpContext.Session.GetString("loggedInUser");
+                if (string.IsNullOrEmpty(curMail))
+                {
+                    return Unauthorized();
+                }
+
+                var ticket = await context.Tickets
+                    .Include(x => x.PurchaseRequest)
+                    .Where(x => x.TicketId == parameters.TicketID && x.UserEmail == curMail && x.PurchaseRequest != null)
+                    .FirstOrDefaultAsync();
+                if(ticket == null)
+                {
+                    return NotFound("Ticket not found or not purchased by you.");
+                }
+                if(ticket.PurchaseRequest.IsAccepted)
+                {
+                    return BadRequest("Ticket already purchased");
+                }
+
+                if (parameters.IsAccepted)
+                {
+                    ticket.PurchaseRequest.IsAccepted = true;
+                }
+                else
+                {
+                    context.PurchaseRequests.Remove(ticket.PurchaseRequest);
+                }
+                await context.SaveChangesAsync();
+
+                return Ok("Purchase request status updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
     }

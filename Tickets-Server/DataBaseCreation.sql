@@ -59,6 +59,15 @@ UserEmail nvarchar(100),
 FOREIGN KEY(UserEmail) REFERENCES Users(Email),
 );
 
+CREATE TABLE PurchaseRequests(
+TicketId INT PRIMARY KEY,
+FOREIGN KEY(TicketId) REFERENCES Tickets(TicketId),
+BuyerEmail Nvarchar(100) NOT NULL,
+FOREIGN KEY(BuyerEmail) REFERENCES Users(Email),
+IsAccepted bit NOT NULL Default 0,
+
+);
+
 
 -- Create a login for the admin user
 CREATE LOGIN [AdminLogin] WITH PASSWORD = 'Ran1234';

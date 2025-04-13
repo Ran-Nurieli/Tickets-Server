@@ -17,6 +17,8 @@ public partial class TicketsServerDBContext : DbContext
 
     public virtual DbSet<FeedBack> FeedBacks { get; set; }
 
+    public virtual DbSet<PurchaseRequest> PurchaseRequests { get; set; }
+
     public virtual DbSet<Rank> Ranks { get; set; }
 
     public virtual DbSet<Team> Teams { get; set; }
@@ -33,22 +35,37 @@ public partial class TicketsServerDBContext : DbContext
     {
         modelBuilder.Entity<FeedBack>(entity =>
         {
-            entity.HasKey(e => e.FeedBackId).HasName("PK__FeedBack__E2CB3B87B945EF67");
+            entity.HasKey(e => e.FeedBackId).HasName("PK__FeedBack__E2CB3B87CC8AE1E3");
+        });
+
+        modelBuilder.Entity<PurchaseRequest>(entity =>
+        {
+            entity.HasKey(e => e.TicketId).HasName("PK__Purchase__712CC607E05C8F43");
+
+            entity.Property(e => e.TicketId).ValueGeneratedNever();
+
+            entity.HasOne(d => d.BuyerEmailNavigation).WithMany(p => p.PurchaseRequests)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__PurchaseR__Buyer__32E0915F");
+
+            entity.HasOne(d => d.Ticket).WithOne(p => p.PurchaseRequest)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__PurchaseR__Ticke__31EC6D26");
         });
 
         modelBuilder.Entity<Rank>(entity =>
         {
-            entity.HasKey(e => e.RankId).HasName("PK__Ranks__B37AF876FB920526");
+            entity.HasKey(e => e.RankId).HasName("PK__Ranks__B37AF87698479595");
         });
 
         modelBuilder.Entity<Team>(entity =>
         {
-            entity.HasKey(e => e.TeamId).HasName("PK__Teams__123AE799CC1E9EAB");
+            entity.HasKey(e => e.TeamId).HasName("PK__Teams__123AE799DF261000");
         });
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.TicketId).HasName("PK__Tickets__712CC607BCF7C7E7");
+            entity.HasKey(e => e.TicketId).HasName("PK__Tickets__712CC6072E41C07B");
 
             entity.HasOne(d => d.Team).WithMany(p => p.Tickets).HasConstraintName("FK__Tickets__TeamId__2E1BDC42");
 
@@ -57,7 +74,7 @@ public partial class TicketsServerDBContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Email).HasName("PK__Users__A9D10535180BB6B0");
+            entity.HasKey(e => e.Email).HasName("PK__Users__A9D10535E886479F");
 
             entity.HasOne(d => d.FeedBack).WithMany(p => p.Users).HasConstraintName("FK__Users__FeedBackI__29572725");
 
