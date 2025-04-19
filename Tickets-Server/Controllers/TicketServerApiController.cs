@@ -353,11 +353,12 @@ namespace Tickets_Server.Controllers
                 if (string.IsNullOrEmpty(curMail))
                 {
                     return Unauthorized();
+
                 }
                 var tickets = await context.Tickets
                     .Include(x => x.PurchaseRequest)
                     .ThenInclude(x => x.BuyerEmailNavigation)
-                    .Where(x => x.UserEmail == curMail && x.PurchaseRequest == null).ToListAsync();
+                    .Where(x => x.UserEmail == curMail).ToListAsync();
 
                 if (tickets == null)
                 {
@@ -368,7 +369,7 @@ namespace Tickets_Server.Controllers
                 {
                     myTickets.Add(new MyTicketsDTO(ticket));
                 }
-                return Ok(tickets);
+                return Ok(myTickets);
             }
             catch (Exception ex)
             {

@@ -24,8 +24,8 @@ namespace Tickets_Server.DTO
             this.Row = ticket.Row;
             this.Seats = ticket.Seats;
             this.Price = ticket.Price ?? 0;
-            this.BuyerUsername = ticket.PurchaseRequest?.BuyerEmailNavigation?.Username;
-            this.BuyerPhone = ticket.PurchaseRequest?.BuyerEmailNavigation?.Phone;
+            this.BuyerUsername = new string(ticket.PurchaseRequest?.BuyerEmailNavigation?.Username.ToCharArray());
+            this.BuyerPhone = new string(ticket.PurchaseRequest?.BuyerEmailNavigation?.Phone.ToCharArray());
             this.IsAccepted = ticket.PurchaseRequest?.IsAccepted ?? false;
 
         }   
