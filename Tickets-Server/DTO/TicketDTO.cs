@@ -8,7 +8,7 @@ namespace Tickets_Server.DTO
 
         public int Price { get; set; }
 
-        public string Place { get; set; }
+        public int Gate { get; set; }
 
         public int Row { get; set; }
 

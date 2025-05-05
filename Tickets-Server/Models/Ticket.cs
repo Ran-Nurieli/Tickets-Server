@@ -13,8 +13,7 @@ public partial class Ticket
 
     public int? Price { get; set; }
 
-    [StringLength(100)]
-    public string Place { get; set; } = null!;
+    public int Gate { get; set; }
 
     public int? Row { get; set; }
 

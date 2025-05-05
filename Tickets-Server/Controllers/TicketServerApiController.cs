@@ -185,7 +185,7 @@ namespace Tickets_Server.Controllers
 
 
         [HttpPost("SellTicket")]
-        public IActionResult SellTicket(DTO.TicketDTO ticketDto)
+        public async Task<IActionResult> SellTicket(DTO.TicketDTO ticketDto)
         {
             try
             {
@@ -194,29 +194,35 @@ namespace Tickets_Server.Controllers
                 {
                     return Unauthorized();
                 }
-                // Retrieve the ticket from the database
-                var ticket = context.Tickets
-                    .FirstOrDefault(t => t.TicketId == ticketDto.TicketId);
 
-                // If no ticket is found, return a NotFound response
-                if (ticket == null)
-                {
-                    return NotFound(new { message = "Ticket not found" });
-                }
-
-                // Validate the price, ensuring it doesn't exceed the original price
-                if (ticketDto.Price > ticket.Price)
-                {
-                    return Unauthorized(new { message = "You can't sell a ticket for more than its original price." });
-                }
-
-                // Return a success response
-                return Ok(new { message = "Ticket sold successfully" });
+                Ticket t = TicketModelHelper.TicketDTOToTicket(ticketDto);
+                t.UserEmail = curMail;
+                // Add the ticket to the database
+                context.Tickets.Add(t);
+                await context.SaveChangesAsync();
+                return Ok();
             }
             catch (Exception ex)
             {
                 // Log the exception (or return it for debugging purposes)
                 return BadRequest(new { message = "An error occurred while selling the ticket.", error = ex.Message });
+            }
+        }
+        [HttpGet("GetTeams")]
+        public async Task<IActionResult> GetTeams()
+        {
+            try
+            {
+                var teams = await context.Teams.ToListAsync();
+                if (teams == null)
+                {
+                    return NotFound("No teams found.");
+                }
+                return Ok(teams);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
             }
         }
 
@@ -226,7 +232,7 @@ namespace Tickets_Server.Controllers
             try
             {
                 // Assuming tickets are stored in a Tickets table or similar in your DB
-                var tickets = await context.Tickets.Include(x => x.PurchaseRequest).Where(x => x.PurchaseRequest == null).ToListAsync();
+                var tickets = await context.Tickets.Include(x => x.PurchaseRequest).Include(x => x.Team).Where(x => x.PurchaseRequest == null).ToListAsync();
 
                 if (tickets == null || !tickets.Any())
                 {

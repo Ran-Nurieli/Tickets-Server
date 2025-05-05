@@ -35,12 +35,12 @@ public partial class TicketsServerDBContext : DbContext
     {
         modelBuilder.Entity<FeedBack>(entity =>
         {
-            entity.HasKey(e => e.FeedBackId).HasName("PK__FeedBack__E2CB3B87CC8AE1E3");
+            entity.HasKey(e => e.FeedBackId).HasName("PK__FeedBack__E2CB3B875EF8306A");
         });
 
         modelBuilder.Entity<PurchaseRequest>(entity =>
         {
-            entity.HasKey(e => e.TicketId).HasName("PK__Purchase__712CC607E05C8F43");
+            entity.HasKey(e => e.TicketId).HasName("PK__Purchase__712CC607F3E5CD75");
 
             entity.Property(e => e.TicketId).ValueGeneratedNever();
 
@@ -55,17 +55,17 @@ public partial class TicketsServerDBContext : DbContext
 
         modelBuilder.Entity<Rank>(entity =>
         {
-            entity.HasKey(e => e.RankId).HasName("PK__Ranks__B37AF87698479595");
+            entity.HasKey(e => e.RankId).HasName("PK__Ranks__B37AF8768BE6F477");
         });
 
         modelBuilder.Entity<Team>(entity =>
         {
-            entity.HasKey(e => e.TeamId).HasName("PK__Teams__123AE799DF261000");
+            entity.HasKey(e => e.TeamId).HasName("PK__Teams__123AE79962BDA678");
         });
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.TicketId).HasName("PK__Tickets__712CC6072E41C07B");
+            entity.HasKey(e => e.TicketId).HasName("PK__Tickets__712CC6074936F52E");
 
             entity.HasOne(d => d.Team).WithMany(p => p.Tickets).HasConstraintName("FK__Tickets__TeamId__2E1BDC42");
 
@@ -74,7 +74,7 @@ public partial class TicketsServerDBContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Email).HasName("PK__Users__A9D10535E886479F");
+            entity.HasKey(e => e.Email).HasName("PK__Users__A9D105353D1EE0FF");
 
             entity.HasOne(d => d.FeedBack).WithMany(p => p.Users).HasConstraintName("FK__Users__FeedBackI__29572725");
 

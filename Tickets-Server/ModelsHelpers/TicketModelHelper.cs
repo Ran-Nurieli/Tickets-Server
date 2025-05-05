@@ -9,7 +9,7 @@ namespace Tickets_Server.ModelsHelpers
             return new Ticket()
             {
                 Price = ticketDTO.Price,
-                Place = ticketDTO.Place,
+                Gate = ticketDTO.Gate,
                 Row = ticketDTO.Row,
                 Seats = ticketDTO.Seats,
                 TeamId = ticketDTO.TeamId,

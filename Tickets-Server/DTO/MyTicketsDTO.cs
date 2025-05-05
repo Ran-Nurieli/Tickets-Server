@@ -6,7 +6,7 @@ namespace Tickets_Server.DTO
         public int TicketId { get; set; }
         public string Username { get; set; } = null!;
         public string? TeamName { get; set; } = null!;
-        public string Place { get; set; } = null!;
+        public int Gate { get; set; }
         public int? Row { get; set; } 
         public int? Seats { get; set; } = null!;
         public DateTime Date { get; set; }
@@ -20,7 +20,7 @@ namespace Tickets_Server.DTO
         {
             this.TicketId = ticket.TicketId;
             this.TeamName = ticket.Team?.TeamName;
-            this.Place = ticket.Place;
+            this.Gate = ticket.Gate;
             this.Row = ticket.Row;
             this.Seats = ticket.Seats;
             this.Price = ticket.Price ?? 0;

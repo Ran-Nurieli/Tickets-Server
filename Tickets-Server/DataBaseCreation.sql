@@ -33,8 +33,10 @@ Gender Nvarchar(100) NOT NULL,
 RankId INT,
 FeedBackId INT,
 IsAdmin bit NOT NULL Default 0,
+FavoriteTeamId int,
 FOREIGN KEY(RankId) REFERENCES Ranks(RankId),
 FOREIGN KEY(FeedBackId) REFERENCES FeedBacks(FeedBackId),
+FOREIGN KEY(FavoriteTeamId) REFERENCES Teams(TeamId),
 
 );
 
@@ -50,13 +52,15 @@ PriceForTicket int,
 CREATE TABLE Tickets(
 TicketId INT PRIMARY KEY IDENTITY,
 Price int,
-Place Nvarchar(100) NOT NULL,
+Gate int NOT NULL,
 [Row] int,
 Seats Int,
 TeamId INT,
 FOREIGN KEY(TeamId) REFERENCES Teams(TeamId),
 UserEmail nvarchar(100),
 FOREIGN KEY(UserEmail) REFERENCES Users(Email),
+CompetingTeamId INT,
+FOREIGN KEY(CompetingTeamId) REFERENCES Teams(TeamId),
 );
 
 CREATE TABLE PurchaseRequests(
@@ -98,23 +102,29 @@ INSERT INTO Users Values('Gal123','A12345','Amir5@gmail.com','0549991122',36,'Fe
 INSERT INTO Users Values('Ben1234','C12345','Amir6@gmail.com','0559991122',17,'Female',2,null,0)
 INSERT INTO Users Values('Guy123','B12345','Amir7@gmail.com','0569991122',26,'Male',2,null,0)
 
-INSERT INTO Tickets (Price, Place, [Row], Seats, TeamId, UserEmail)
-VALUES (70,'Gate 1', 1, 5, (SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Tel Aviv'),'Amir1@gmail.com')
+INSERT INTO Tickets (Price, Gate, [Row], Seats, TeamId,CompetingTeamId ,UserEmail)
+VALUES (70,1, 1, 5, (SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Tel Aviv'),
+(SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Haifa'),'Amir1@gmail.com')
 
-INSERT INTO Tickets (Price, Place, [Row], Seats, TeamId, UserEmail)
-VALUES (70,'Gate 1', 7, 7, (SELECT TeamId FROM Teams WHERE TeamName = 'Maccabi' AND TeamCity = 'Tel Aviv'),'Amir1@gmail.com')
+INSERT INTO Tickets (Price, Gate, [Row], Seats, TeamId, UserEmail)
+VALUES (70,1, 7, 7, (SELECT TeamId FROM Teams WHERE TeamName = 'Maccabi' AND TeamCity = 'Tel Aviv'),
+(SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Tel Aviv'),'Amir1@gmail.com')
 
-INSERT INTO Tickets (Price, Place, [Row], Seats, TeamId, UserEmail)
-VALUES (70,'Gate 2', 3, 1, (SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Tel Aviv'),'Amir1@gmail.com')
+INSERT INTO Tickets (Price, Gate, [Row], Seats, TeamId, UserEmail)
+VALUES (70,2, 3, 1, (SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Tel Aviv'),
+(SELECT TeamId FROM Teams WHERE TeamName = 'Maccabi' AND TeamCity = 'Ramat Gan'),'Amir1@gmail.com')
 
-INSERT INTO Tickets (Price, Place, [Row], Seats, TeamId, UserEmail)
-VALUES (70,'Gate 2', 8, 2, (SELECT TeamId FROM Teams WHERE TeamName = 'Maccabi' AND TeamCity = 'Tel Aviv'),'Amir1@gmail.com')
+INSERT INTO Tickets (Price, Gate, [Row], Seats, TeamId, UserEmail)
+VALUES (70,2, 8, 2, (SELECT TeamId FROM Teams WHERE TeamName = 'Maccabi' AND TeamCity = 'Tel Aviv'),
+(SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Galil'),'Amir1@gmail.com')
 
-INSERT INTO Tickets (Price, Place, [Row], Seats, TeamId, UserEmail)
-VALUES (70,'Gate 3', 5, 3, (SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Haifa'),'Amir1@gmail.com')
+INSERT INTO Tickets (Price, Gate, [Row], Seats, TeamId, UserEmail)
+VALUES (70,3, 5, 3, (SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Haifa'),
+(SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Tel Aviv'),'Amir1@gmail.com')
 
-INSERT INTO Tickets (Price, Place, [Row], Seats, TeamId, UserEmail)
-VALUES (70,'Gate 3', 2, 4, (SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Haifa'),'Amir1@gmail.com')
+INSERT INTO Tickets (Price, Gate, [Row], Seats, TeamId, UserEmail)
+VALUES (70,3, 2, 4, (SELECT TeamId FROM Teams WHERE TeamName = 'Hapoel' AND TeamCity = 'Haifa'),
+(SELECT TeamId FROM Teams WHERE TeamName = 'Maccabi' AND TeamCity = 'Netanya'),'Amir1@gmail.com')
 
 
 --select * from Users
