@@ -194,6 +194,21 @@ namespace Tickets_Server.Controllers
                 {
                     return Unauthorized();
                 }
+                if(ticketDto.TeamId == null || ticketDto.AwayTeamId == null)
+                {
+                    return BadRequest("Team names cannot be empty.");
+                }
+                if(ticketDto.TeamId == ticketDto.AwayTeamId)
+                {
+                    return BadRequest("teams not valid");
+                }
+
+                if(!context.Teams.Where(x => x.TeamId == ticketDto.TeamId).Any() || !context.Teams.Where(x => x.TeamId == ticketDto.AwayTeamId).Any())
+                {
+                    return BadRequest("Teams are not valid.");
+                }
+                
+
 
                 Ticket t = TicketModelHelper.TicketDTOToTicket(ticketDto);
                 t.UserEmail = curMail;
@@ -232,13 +247,18 @@ namespace Tickets_Server.Controllers
             try
             {
                 // Assuming tickets are stored in a Tickets table or similar in your DB
-                var tickets = await context.Tickets.Include(x => x.PurchaseRequest).Include(x => x.Team).Where(x => x.PurchaseRequest == null).ToListAsync();
+                var tickets = await context.Tickets.Include(x => x.PurchaseRequest).Include(x => x.Team).Include(x=> x.AwayTeam).Where(x => x.PurchaseRequest == null).ToListAsync();
 
                 if (tickets == null || !tickets.Any())
                 {
                     return NotFound("No tickets found.");
                 }
-
+                List<TicketReadDTO> myTickets = new List<TicketReadDTO>();
+                foreach (var ticket in tickets)
+                {
+                    myTickets.Add(new TicketReadDTO(ticket));
+                }
+                return Ok(myTickets);
                 return Ok(tickets);
             }
             catch (Exception ex)
@@ -362,6 +382,8 @@ namespace Tickets_Server.Controllers
 
                 }
                 var tickets = await context.Tickets
+                    .Include(x => x.AwayTeam)
+                    .Include(x => x.Team)
                     .Include(x => x.PurchaseRequest)
                     .ThenInclude(x => x.BuyerEmailNavigation)
                     .Where(x => x.UserEmail == curMail).ToListAsync();
@@ -370,10 +392,10 @@ namespace Tickets_Server.Controllers
                 {
                     return NotFound();
                 }
-                List<MyTicketsDTO> myTickets = new List<MyTicketsDTO>();
+                List<TicketReadDTO> myTickets = new List<TicketReadDTO>();
                 foreach (var ticket in tickets)
                 {
-                    myTickets.Add(new MyTicketsDTO(ticket));
+                    myTickets.Add(new TicketReadDTO(ticket));
                 }
                 return Ok(myTickets);
             }

@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Tickets_Server.DTO
+﻿namespace Tickets_Server.DTO
 {
-    public class TicketDTO
+    public class TicketReadDTO
     {
+
         public int TicketId { get; set; }
 
         public int Price { get; set; }
@@ -14,23 +13,19 @@ namespace Tickets_Server.DTO
 
         public int Seats { get; set; }
 
-        public int TeamId { get; set; }
-        public int AwayTeamId { get; set; }
-        public TicketDTO() { }
+        public string HomeTeam { get; set; }
+        public string AwayTeam { get; set; }
 
-        public TicketDTO(Models.Ticket ticket)
+        public TicketReadDTO(Models.Ticket ticket)
         {
             this.TicketId = ticket.TicketId;
             this.Price = (int)ticket.Price;
             this.Gate = (int)ticket.Gate;
             this.Row = (int)ticket.Row;
             this.Seats = (int)ticket.Seats;
-            this.TeamId = (int)ticket.TeamId;
-            this.AwayTeamId = (int)ticket.AwayTeamId;
+            this.HomeTeam = ticket.Team?.TeamName + ticket.Team?.TeamCity;
+            this.AwayTeam = ticket.AwayTeam?.TeamName + ticket.AwayTeam?.TeamCity;
 
         }
-       
-
-
     }
 }

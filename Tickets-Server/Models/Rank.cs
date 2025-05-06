@@ -15,5 +15,5 @@ public partial class Rank
     public string? RankType { get; set; }
 
     [InverseProperty("Rank")]
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<User> Users { get; } = new List<User>();
 }

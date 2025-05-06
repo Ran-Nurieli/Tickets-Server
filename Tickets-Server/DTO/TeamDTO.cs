@@ -16,6 +16,15 @@ namespace Tickets_Server.DTO
 
         public TeamDTO() { }
 
+        public TeamDTO(Models.Team team)
+        {
+            this.TeamId = team.TeamId;
+            this.Capacity = (int)team.Capacity;
+            this.TeamName = team.TeamName;
+            this.TeamCity = team.TeamCity;
+            this.PriceForTicket = (int)team.PriceForTicket;
+        }
+
 
     }
 }

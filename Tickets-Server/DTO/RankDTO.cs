@@ -10,5 +10,11 @@ namespace Tickets_Server.DTO
 
         public RankDTO() { }
 
+        public RankDTO(Models.Rank rank)
+        {
+            this.RankId = rank.RankId;
+            this.RankType = rank.RankType;
+        }
+
     }
 }

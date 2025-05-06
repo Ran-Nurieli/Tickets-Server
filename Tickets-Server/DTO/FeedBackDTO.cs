@@ -9,5 +9,12 @@
         public string Info { get; set; }
 
         public FeedBackDTO() { }
+
+        public FeedBackDTO(Models.FeedBack feedBack)
+        {
+            this.FeedBackId = feedBack.FeedBackId;
+            this.FeedBackType = (int)feedBack.FeedBackType;
+            this.Info = feedBack.Info;
+        }
     }
 }

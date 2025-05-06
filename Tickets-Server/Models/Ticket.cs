@@ -24,11 +24,17 @@ public partial class Ticket
     [StringLength(100)]
     public string? UserEmail { get; set; }
 
+    public int? AwayTeamId { get; set; }
+
+    [ForeignKey("AwayTeamId")]
+    [InverseProperty("TicketAwayTeams")]
+    public virtual Team? AwayTeam { get; set; }
+
     [InverseProperty("Ticket")]
     public virtual PurchaseRequest? PurchaseRequest { get; set; }
 
     [ForeignKey("TeamId")]
-    [InverseProperty("Tickets")]
+    [InverseProperty("TicketTeams")]
     public virtual Team? Team { get; set; }
 
     [ForeignKey("UserEmail")]

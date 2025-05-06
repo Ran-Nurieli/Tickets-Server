@@ -17,5 +17,5 @@ public partial class FeedBack
     public string Info { get; set; } = null!;
 
     [InverseProperty("FeedBack")]
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<User> Users { get; } = new List<User>();
 }

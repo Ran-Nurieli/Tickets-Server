@@ -21,6 +21,12 @@ public partial class Team
 
     public int? PriceForTicket { get; set; }
 
+    [InverseProperty("AwayTeam")]
+    public virtual ICollection<Ticket> TicketAwayTeams { get; } = new List<Ticket>();
+
     [InverseProperty("Team")]
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+    public virtual ICollection<Ticket> TicketTeams { get; } = new List<Ticket>();
+
+    [InverseProperty("FavoriteTeam")]
+    public virtual ICollection<User> Users { get; } = new List<User>();
 }

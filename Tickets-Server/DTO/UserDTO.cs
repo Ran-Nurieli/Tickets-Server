@@ -1,4 +1,6 @@
-﻿namespace Tickets_Server.DTO
+﻿using Tickets_Server.Models;
+
+namespace Tickets_Server.DTO
 {
     public class UserDTO
     {
@@ -11,8 +13,9 @@
         public string Gender { get; set; } = null!;
 
         public bool IsAdmin {  get; set; }
+        public string? HomeTeam { get; set; } = null!;
+        //add TeamId
 
-      
         public UserDTO() { }
 
         public UserDTO(Models.User user)
@@ -23,6 +26,7 @@
             this.Email = user.Email;
             this.Age = ((int)user.Age);
             this.Gender = user.Gender;
+            this.HomeTeam = user.FavoriteTeam?.TeamName;
             this.IsAdmin = user.IsAdmin;
         }
 

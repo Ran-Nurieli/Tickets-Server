@@ -32,17 +32,23 @@ public partial class User
 
     public bool IsAdmin { get; set; }
 
+    public int? FavoriteTeamId { get; set; }
+
+    [ForeignKey("FavoriteTeamId")]
+    [InverseProperty("Users")]
+    public virtual Team? FavoriteTeam { get; set; }
+
     [ForeignKey("FeedBackId")]
     [InverseProperty("Users")]
     public virtual FeedBack? FeedBack { get; set; }
 
     [InverseProperty("BuyerEmailNavigation")]
-    public virtual ICollection<PurchaseRequest> PurchaseRequests { get; set; } = new List<PurchaseRequest>();
+    public virtual ICollection<PurchaseRequest> PurchaseRequests { get; } = new List<PurchaseRequest>();
 
     [ForeignKey("RankId")]
     [InverseProperty("Users")]
     public virtual Rank? Rank { get; set; }
 
     [InverseProperty("UserEmailNavigation")]
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+    public virtual ICollection<Ticket> Tickets { get; } = new List<Ticket>();
 }
