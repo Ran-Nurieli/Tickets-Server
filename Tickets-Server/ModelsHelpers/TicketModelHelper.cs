@@ -13,6 +13,8 @@ namespace Tickets_Server.ModelsHelpers
                 Row = ticketDTO.Row,
                 Seats = ticketDTO.Seats,
                 TeamId = ticketDTO.TeamId,
+                AwayTeamId = ticketDTO.AwayTeamId,
+                
             };
 
         }   

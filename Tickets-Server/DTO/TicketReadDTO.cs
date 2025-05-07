@@ -23,8 +23,8 @@
             this.Gate = (int)ticket.Gate;
             this.Row = (int)ticket.Row;
             this.Seats = (int)ticket.Seats;
-            this.HomeTeam = ticket.Team?.TeamName + ticket.Team?.TeamCity;
-            this.AwayTeam = ticket.AwayTeam?.TeamName + ticket.AwayTeam?.TeamCity;
+            this.HomeTeam =$"{ticket.Team?.TeamName} {ticket.Team?.TeamCity}";
+            this.AwayTeam = $"{ticket.AwayTeam?.TeamName} {ticket.AwayTeam?.TeamCity}";
 
         }
     }

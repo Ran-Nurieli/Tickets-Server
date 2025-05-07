@@ -13,7 +13,7 @@ namespace Tickets_Server.DTO
         public string Gender { get; set; } = null!;
 
         public bool IsAdmin {  get; set; }
-        public string? HomeTeam { get; set; } = null!;
+        public int? FavoriteTeamId { get; set; } = null!;
         //add TeamId
 
         public UserDTO() { }
@@ -26,7 +26,7 @@ namespace Tickets_Server.DTO
             this.Email = user.Email;
             this.Age = ((int)user.Age);
             this.Gender = user.Gender;
-            this.HomeTeam = user.FavoriteTeam?.TeamName;
+            this.FavoriteTeamId = user.FavoriteTeamId;
             this.IsAdmin = user.IsAdmin;
         }
 

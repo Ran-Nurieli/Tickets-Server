@@ -28,7 +28,8 @@ namespace Tickets_Server.DTO
             this.Price = ticket.Price ?? 0;
             this.BuyerUsername = new string(ticket.PurchaseRequest?.BuyerEmailNavigation?.Username.ToCharArray());
             this.BuyerPhone = new string(ticket.PurchaseRequest?.BuyerEmailNavigation?.Phone.ToCharArray());
-            this.AwayTeam = ticket.Team?.TeamName + ticket.Team?.TeamCity;
+            this.HomeTeam = $"{ticket.Team?.TeamName} {ticket.Team?.TeamCity}";
+            this.AwayTeam = $"{ticket.AwayTeam?.TeamName} {ticket.AwayTeam?.TeamCity}";
             this.IsAccepted = ticket.PurchaseRequest?.IsAccepted ?? false;
 
         }   

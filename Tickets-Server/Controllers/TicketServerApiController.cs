@@ -392,10 +392,10 @@ namespace Tickets_Server.Controllers
                 {
                     return NotFound();
                 }
-                List<TicketReadDTO> myTickets = new List<TicketReadDTO>();
+                List<MyTicketsDTO> myTickets = new List<MyTicketsDTO>();
                 foreach (var ticket in tickets)
                 {
-                    myTickets.Add(new TicketReadDTO(ticket));
+                    myTickets.Add(new MyTicketsDTO(ticket));
                 }
                 return Ok(myTickets);
             }
